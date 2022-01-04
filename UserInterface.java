@@ -21,14 +21,30 @@ public class UserInterface {
 
     public int showMainMenu() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("MAIN MAENU\nEnter your choice\n 1.Add Doctor\n 2.Update Doctor\n 3.Delete Doctor\n 4.Print all Doctor\n" +
-                " 5.Add Patient\n 6.Update Patient\n 7.Delete Patient\n 8.Print all Patient\n" +
-                " 9.Add Appointment\n 10.Update Appointment\n 11.Delete Appointment\n 12.Print all Appointment\n " + Constant.EXIT + ".Exit");
-
-
+        System.out.println("MAIN MENU\nEnter your choice\n 1 for Doctor\n 2 for patient\n 3 for appointment\n " + Constant.MAIN_MENU_EXIT + " for EXIT");
         int option = sc.nextInt();
         return option;
+    }
 
+    public int showDoctorMenu() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("DOCTOR SELECTION MENU\nEnter your choice\n 1. Add Doctor\n 2. Update Doctor\n 3. Remove Doctor\n 4. Print Doctor\n " + SELECTION_MENU_EXIT + ". EXIT");
+        int option = sc.nextInt();
+        return option;
+    }
+
+    public int showPatientMenu() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("PATIENT SELECTION MENU\nEnter your choice\n 1. Add Patient\n 2. Update Patient\n 3. Remove Patient\n 4. Print Patient\n " + Constant.SELECTION_MENU_EXIT + ". EXIT");
+        int option = sc.nextInt();
+        return option;
+    }
+
+    public int showAppointmentMenu() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("APPOINTMENT SELECTION MENU\nEnter your choice\n 1. Add Appointment\n 2. Update Patient\n 3. Remove Appointment\n 4. Print Appointment\n " + Constant.SELECTION_MENU_EXIT + " for EXIT");
+        int option = sc.nextInt();
+        return option;
     }
 
     public void setGender(Patient patient) {
@@ -76,34 +92,6 @@ public class UserInterface {
         return doctor;
     }
 
-    public void updateDoctor(Doctor doctor) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter which parameter to update:\n1. Update Name\n2. Update specialist\n3. Update Mobile No.\n"
-                + "4. Update e-mail\n" + Constant.DOCTOREXIT + ". EXIT");
-        int choice = sc.nextInt();
-        switch (choice) {
-            case 1:
-                System.out.println("Enter name to update");
-                doctor.name = sc.nextLine();
-                break;
-            case 2:
-                System.out.println("Enter specialization to update");
-                doctor.specialization = sc.nextLine();
-                break;
-            case 3:
-                System.out.println("Enter Mobile No. to update");
-                doctor.mobileNum = sc.nextInt();
-                break;
-            case 4:
-                System.out.println("Enter e-mail to update");
-                doctor.emailId = sc.nextLine();
-                break;
-            case DOCTOREXIT:
-            default:
-                System.out.println("Wrong Choice");
-        }
-    }
-
     public Patient getPatientDetails() {
         Patient patient = new Patient();
         Scanner scanner = new Scanner(System.in);
@@ -129,117 +117,159 @@ public class UserInterface {
         return patient;
     }
 
-    public void updatePatient(Patient patient) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter which parameter to update:\n1. Update Name\n2. Update age\n3. Update Mobile No.\n"
-                + "4. Update e-mail\n5. Update address\n6. Update City\n7. Update Disease\n8. Update Gender\n"
-                + Constant.PATIENTEXIT + " .Exit");
-        int choice = sc.nextInt();
-        switch (choice) {
-            case 1:
-                System.out.println("Enter name to update");
-                patient.name = sc.nextLine();
-            case 2:
-                System.out.println("Enter age to update");
-                patient.age = sc.nextInt();
-            case 3:
-                System.out.println("Enter Mobile No. to update");
-                patient.mobileNum = sc.nextInt();
-            case 4:
-                System.out.println("Enter e-mail to update");
-                patient.emailId = sc.nextLine();
-                break;
-            case 5:
-                System.out.println("Enter address to update");
-                patient.address = sc.nextLine();
-                break;
-            case 6:
-                System.out.println("Enter city to update");
-                patient.city = sc.nextLine();
-                break;
-            case 7:
-                System.out.println("Enter disease to update");
-                patient.disease = sc.nextLine();
-                break;
-            case 8:
-                System.out.println("Enter the updated gender");
-                setGender(patient);
-            case Constant.PATIENTEXIT:
-                System.out.println("Exit");
-                break;
-            default:
-                System.out.println("Wrong Choice");
-        }
-    }
-
     public Appointment getAppointmentDetails() {
         Scanner sc = new Scanner(System.in);
         Appointment appoint = new Appointment();
         System.out.println("Enter Appointment Id");
         appoint.appointmentID = sc.next();
         System.out.println("Enter doctor id");
-        appoint.doctorId = sc.nextLine();
+        appoint.doctorId = sc.next();
+
         DoctorStore doctorStore = DoctorStore.getInstance();
         if (doctorStore.IsDoctorAvailable(appoint.doctorId)) {
             System.out.println("Enter the PatientId :");
-            appoint.patientId = sc.nextLine();
+            appoint.patientId = sc.next();
+
             PatientStore patientStore = PatientStore.getInstance();
             if (patientStore.IsPatientAvailable(appoint.patientId)) {
                 System.out.println("Enter the RoomNumber :");
                 appoint.roomNum = sc.nextInt();
+
                 System.out.println("Enter the Appointment Date like dd-MMM-yyyy");
                 Scanner scanner = new Scanner(System.in);
-                appoint.appointmentDate = scanner.nextLine();
+                appoint.appointmentDate = scanner.next();
                 SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
                 try {
                     Date date = formatter.parse(appoint.appointmentDate);
                 } catch (ParseException e) {
-                    e.printStackTrace();
+                    e.printStackTrace(); //Print Exception in Details
                 }
-            } else
+            }
+            else
                 System.out.println("Patient id is not available");
-        } else
+        }
+        else
             System.out.println("Doctor id not available ");
         return appoint;
     }
 
+    public void updateDoctor(Doctor doctor) {
+        Scanner sc = new Scanner(System.in);
+        int choice = 0;
+        do {
+            System.out.println("Enter which parameter to update:\n1. Update Name\n2. Update specialist\n3. Update Mobile No.\n"
+                    + "4. Update e-mail\n" + Constant.DOCTOR_EXIT + ". EXIT");
+            choice = sc.nextInt();
+            switch (choice) {
+                case 1:
+                    System.out.println("Enter name to update");
+                    doctor.name = sc.nextLine();
+                    break;
+                case 2:
+                    System.out.println("Enter specialization to update");
+                    doctor.specialization = sc.nextLine();
+                    break;
+                case 3:
+                    System.out.println("Enter Mobile No. to update");
+                    doctor.mobileNum = sc.nextInt();
+                    break;
+                case 4:
+                    System.out.println("Enter e-mail to update");
+                    doctor.emailId = sc.nextLine();
+                    break;
+                case DOCTOR_EXIT:
+                default:
+                    System.out.println("Wrong Choice");
+            }
+        } while (choice != Constant.DOCTOR_EXIT);
+    }
+
+    public void updatePatient(Patient patient) {
+        Scanner sc = new Scanner(System.in);
+        int choice = 0;
+        do {
+            System.out.println("Enter which parameter to update:\n1. Update Name\n2. Update age\n3. Update Mobile No.\n"
+                    + "4. Update e-mail\n5. Update address\n6. Update City\n7. Update Disease\n8. Update Gender\n"
+                    + Constant.PATIENT_EXIT + " .Exit");
+            choice = sc.nextInt();
+            switch (choice) {
+                case 1:
+                    System.out.println("Enter name to update");
+                    patient.name = sc.nextLine();
+                case 2:
+                    System.out.println("Enter age to update");
+                    patient.age = sc.nextInt();
+                case 3:
+                    System.out.println("Enter Mobile No. to update");
+                    patient.mobileNum = sc.nextInt();
+                case 4:
+                    System.out.println("Enter e-mail to update");
+                    patient.emailId = sc.nextLine();
+                    break;
+                case 5:
+                    System.out.println("Enter address to update");
+                    patient.address = sc.nextLine();
+                    break;
+                case 6:
+                    System.out.println("Enter city to update");
+                    patient.city = sc.nextLine();
+                    break;
+                case 7:
+                    System.out.println("Enter disease to update");
+                    patient.disease = sc.nextLine();
+                    break;
+                case 8:
+                    System.out.println("Enter the updated gender");
+                    setGender(patient);
+                case Constant.PATIENT_EXIT:
+                    System.out.println("Exit");
+                    break;
+                default:
+                    System.out.println("Wrong Choice");
+            }
+        } while (choice != Constant.PATIENT_EXIT);
+    }
+
     public Appointment updateAppointment(Appointment appointment) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter where u want to update \n1.patientId\n2.doctorId\n3.appointmentDate\n4.roomNumber\n"
-                + APPOINTMENTEXIT + ".Exit");
-        int choice = scanner.nextInt();
-        switch (choice) {
-            case 1:
-                System.out.println("Enter patientId");
-                appointment.patientId = scanner.nextLine();
-                break;
-            case 2:
-                System.out.println("Enter doctorId");
-                appointment.doctorId = scanner.next();
-                break;
-            case 3:
-                System.out.println("Enter the Appointment Date like dd-MMM-yyyy");
-                Scanner scanner2 = new Scanner(System.in);
-                appointment.appointmentDate = scanner2.nextLine();
-                SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
-                try {
-                    Date date = formatter.parse(appointment.appointmentDate);
-                } catch (ParseException e) {
-                    e.printStackTrace(); //Print Exception in Details
-                }
-                break;
-            case 4:
-                System.out.println("Enter roomNumber");
-                appointment.doctorId = scanner.next();
-                break;
-            case APPOINTMENTEXIT:
-                System.out.println("EXIT");
-                break;
-            default:
-                System.out.println("Enter correct option.");
-                break;
-        }
-        return appointment;
+        int choice = 0;
+        do {
+            System.out.println("Enter where u want to update \n1.patientId\n2.doctorId\n3.appointmentDate\n4.roomNumber\n"
+                    + APPOINTMENT_EXIT + ".Exit");
+            choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    System.out.println("Enter patientId");
+                    appointment.patientId = scanner.nextLine();
+                    break;
+                case 2:
+                    System.out.println("Enter doctorId");
+                    appointment.doctorId = scanner.next();
+                    break;
+                case 3:
+                    System.out.println("Enter the Appointment Date like dd-MMM-yyyy");
+                    Scanner scanner2 = new Scanner(System.in);
+                    appointment.appointmentDate = scanner2.nextLine();
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+                    try {
+                        Date date = (Date) formatter.parse(appointment.appointmentDate);
+                    } catch (ParseException e) {
+                        e.printStackTrace(); //Print Exception in Details
+                    }
+                    break;
+                case 4:
+                    System.out.println("Enter roomNumber");
+                    appointment.doctorId = scanner.next();
+                    break;
+                case APPOINTMENT_EXIT:
+                    System.out.println("EXIT");
+                    break;
+                default:
+                    System.out.println("Enter correct option.");
+                    break;
+            }
+            return appointment;
+        } while (choice != Constant.APPOINTMENT_EXIT);
     }
 
 
