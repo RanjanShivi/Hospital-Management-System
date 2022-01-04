@@ -1,6 +1,22 @@
 package com;
 
+import java.util.Objects;
+
 public class Patient {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Patient patient = (Patient) o;
+        return mobileNum == patient.mobileNum || Objects.equals(emailId, patient.emailId) || Objects.equals(id, patient.id);
+    }
+
+    @Override
+    public int hashCode() {
+        //return Objects.hash(id);
+        return 5;
+    }
+
     enum Gender {
         MALE, FEMALE, OTHER;
     }
