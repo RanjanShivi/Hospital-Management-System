@@ -2,16 +2,15 @@ package com;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.*;
 
-    public class DoctorStore {
+public class DoctorStore {
         private static DoctorStore instance;
-        private Set<Doctor> doctorList = new HashSet<>();
+        private Set<Doctor> doctorSet = new HashSet<>();
 
         private DoctorStore() {
         }
 
-        public static DoctorStore getInstance() {
+        public static synchronized DoctorStore getInstance() {
             if (instance == null)
                 instance = new DoctorStore();
             return instance;
@@ -19,12 +18,12 @@ import java.util.*;
 
         void add(Doctor doctor) {
 
-            doctorList.add(doctor);
+            doctorSet.add(doctor);
         }
 
         public void remove(Doctor doctor) {
 
-            doctorList.remove(doctor);
+            doctorSet.remove(doctor);
         }
 
         Doctor getDoctor(String iD) {
@@ -32,15 +31,15 @@ import java.util.*;
             if (doctorList.get(i).id.equals(iD))
                 return doctorList.get(i);
         }*/
-            for( Doctor doctor: doctorList) {
+            for( Doctor doctor: doctorSet) {
                 if (doctor.id.equals(iD))
                     return doctor;
             }
             return null;
         }
 
-        Set<Doctor> getDoctorList() {
-            return doctorList;
+        Set<Doctor> getDoctorSet() {
+            return doctorSet;
         }
 
         boolean IsDoctorAvailable(String iD) {
@@ -48,7 +47,7 @@ import java.util.*;
             if (doctorList.get(i).id.equals(iD))
                 return true;
         }*/
-            for( Doctor doctor: doctorList) {
+            for( Doctor doctor: doctorSet) {
                 if (doctor.id.equals(iD))
                     return true;
             }
