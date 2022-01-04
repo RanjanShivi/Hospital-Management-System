@@ -1,17 +1,15 @@
 package com;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class AppointmentStore {
     private static AppointmentStore instance;
-    Set<Appointment> appointmentList = new HashSet<>();
+    Set<Appointment> appointmenSet = new HashSet<>();
 
     private AppointmentStore() {
     }
 
-    public static AppointmentStore getInstance() {
+    public static synchronized AppointmentStore getInstance() {
         if (instance == null)
             instance = new AppointmentStore();
         return instance;
@@ -19,11 +17,11 @@ public class AppointmentStore {
 
     public void add(Appointment appoint) {
 
-        appointmentList.add(appoint);
+        appointmenSet.add(appoint);
     }
 
-    Set<Appointment> getAppointmentList(){
-        return appointmentList;
+    Set<Appointment> getAppointmentSet(){
+        return appointmenSet;
     }
 
     Appointment getAppointment(String iD) {
@@ -32,7 +30,7 @@ public class AppointmentStore {
                 return appointmentList.get(i);
             }
         }*/
-        for( Appointment appointment: appointmentList) {
+        for( Appointment appointment: appointmenSet) {
             if (appointment.appointmentID.equals(iD))
                 return appointment;
         }
@@ -40,6 +38,6 @@ public class AppointmentStore {
     }
 
     public void remove(Appointment appointment) {
-        appointmentList.remove(appointment);
+        appointmenSet.remove(appointment);
     }
 }
