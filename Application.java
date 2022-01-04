@@ -23,19 +23,19 @@ public class Application{
                 do {
                 doctorOption = userInterface.showDoctorMenu();
                 handleUserSelectionDoctor(doctorOption);
-                } while (doctorOption != SELECTION_MENU_EXIT);
+                } while (doctorOption != Constant.SELECTION_MENU_EXIT);
                 break;
             case 2:
                 do {
                     patientOption = userInterface.showPatientMenu();
                     handleUserSelectionPatient(patientOption);
-                }while (patientOption != SELECTION_MENU_EXIT);
+                }while (patientOption != Constant.SELECTION_MENU_EXIT);
                 break;
             case 3:
                 do {
                     appointmentOption = userInterface.showAppointmentMenu();
                     handleUserSelectionAppointment(appointmentOption);
-                }while (appointmentOption != SELECTION_MENU_EXIT);
+                }while (appointmentOption != Constant.SELECTION_MENU_EXIT);
                 break;
             case Constant.MAIN_MENU_EXIT:
                 System.out.println("EXIT MAIN MENU");
@@ -108,7 +108,7 @@ public class Application{
                 Set patientList = patientStore.getPatientSet();
                 userInterface.printAllPatient(patientList);
                 break;
-            case SELECTION_MENU_EXIT:
+            case Constant.SELECTION_MENU_EXIT:
                 System.out.println("EXIT PATIENT MENU");
                 break;
             default:
@@ -144,7 +144,7 @@ public class Application{
                 Set appointmentList = appointmentStore.getAppointmentSet();
                 userInterface.printAllAppointment(appointmentList);
                 break;
-            case SELECTION_MENU_EXIT:
+            case Constant.SELECTION_MENU_EXIT:
                 System.out.println("EXIT APPOINTMENT MENU");
                 break;
             default:
